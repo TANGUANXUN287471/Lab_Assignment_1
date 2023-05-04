@@ -40,6 +40,7 @@ class _CountryInformationState extends State<CountryInformation> {
       currency = "",
       capital = "",
       flag = "MY",
+      desc = "",
       gdp = 0.0,
       area = 0.0,
       population = 0.0;
@@ -171,8 +172,10 @@ class _CountryInformationState extends State<CountryInformation> {
                                     fontWeight: FontWeight.bold))
                           ]),
                     ),
-                  ])
-            ])));
+                  ]),
+              Text(desc, style: const TextStyle(fontStyle: FontStyle.italic)),
+              ])
+            ));
   }
 
   void searchCountry() async {
@@ -196,7 +199,7 @@ class _CountryInformationState extends State<CountryInformation> {
     if (response.statusCode == 200) {
       var jsonData = response.body;
       var parsedJson = json.decode(jsonData);
-      //currency = parsedJson
+    
       setState(() {
         gdp = parsedJson[0]["gdp"];
         currency = parsedJson[0]["currency"]["code"];
@@ -206,8 +209,13 @@ class _CountryInformationState extends State<CountryInformation> {
         population = parsedJson[0]["population"];
         flag = parsedJson[0]["iso2"];
         nationflag = NetworkImage("https://flagsapi.com/$flag/shiny/64.png");
+        desc = "$countryName Information Displayed";
       });
       //print(parsedJson);
+    }else{
+      setState(() {
+      desc = "Invalid Input: NO COUNTRY FOUND !!!";
+      });
     }
   }
 }
