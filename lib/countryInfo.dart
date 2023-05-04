@@ -34,10 +34,12 @@ class CountryInformation extends StatefulWidget {
 
 class _CountryInformationState extends State<CountryInformation> {
   TextEditingController textEC = TextEditingController();
+  ImageProvider nationflag = const NetworkImage('');
 
   var countryName = "",
       currency = "",
       capital = "",
+      flag = "MY",
       gdp = 0.0,
       area = 0.0,
       population = 0.0;
@@ -73,19 +75,21 @@ class _CountryInformationState extends State<CountryInformation> {
                   mainAxisSpacing: 10,
                   crossAxisCount: 3,
                   children: <Widget>[
-                    Container(
+                    SingleChildScrollView(child: Container(
                       padding: const EdgeInsets.all(10),
                       color: Colors.blue[200],
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            const Text("Country Name"),
-                            const Icon(
-                              Icons.flag_circle,
-                              size: 50,
+                            const Text("Country Flag"),
+                            Image.network(
+                              "https://flagsapi.com/$flag/shiny/64.png",
+                              fit: BoxFit.cover,
                             ),
-                            Text(countryName,style: const TextStyle(fontWeight: FontWeight.bold))
-                          ]),
+                            Text(countryName,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold))
+                          ])),
                     ),
                     Container(
                       padding: const EdgeInsets.all(10),
@@ -98,7 +102,9 @@ class _CountryInformationState extends State<CountryInformation> {
                               Icons.monetization_on_outlined,
                               size: 50,
                             ),
-                            Text(currency,style: const TextStyle(fontWeight: FontWeight.bold))
+                            Text(currency,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold))
                           ]),
                     ),
                     Container(
@@ -112,7 +118,9 @@ class _CountryInformationState extends State<CountryInformation> {
                               Icons.location_city,
                               size: 50,
                             ),
-                            Text(capital,style: const TextStyle(fontWeight: FontWeight.bold))
+                            Text(capital,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold))
                           ]),
                     ),
                     Container(
@@ -126,7 +134,9 @@ class _CountryInformationState extends State<CountryInformation> {
                               Icons.moving_outlined,
                               size: 50,
                             ),
-                            Text("$gdp",style: const TextStyle(fontWeight: FontWeight.bold))
+                            Text("$gdp",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold))
                           ]),
                     ),
                     Container(
@@ -140,7 +150,9 @@ class _CountryInformationState extends State<CountryInformation> {
                               Icons.landscape,
                               size: 50,
                             ),
-                            Text("$area",style: const TextStyle(fontWeight: FontWeight.bold))
+                            Text("$area",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold))
                           ]),
                     ),
                     Container(
@@ -154,7 +166,9 @@ class _CountryInformationState extends State<CountryInformation> {
                               Icons.people,
                               size: 50,
                             ),
-                            Text("$population",style: const TextStyle(fontWeight: FontWeight.bold))
+                            Text("$population",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold))
                           ]),
                     ),
                   ])
@@ -183,14 +197,16 @@ class _CountryInformationState extends State<CountryInformation> {
       var jsonData = response.body;
       var parsedJson = json.decode(jsonData);
       //currency = parsedJson
-    setState((){
-      gdp = parsedJson[0]["gdp"];
-      currency = parsedJson[0]["currency"]["code"];
-      capital = parsedJson[0]["capital"];
-      countryName = parsedJson[0]["name"];
-      area = parsedJson[0]["surface_area"];
-      population = parsedJson[0]["population"];
-    });
+      setState(() {
+        gdp = parsedJson[0]["gdp"];
+        currency = parsedJson[0]["currency"]["code"];
+        capital = parsedJson[0]["capital"];
+        countryName = parsedJson[0]["name"];
+        area = parsedJson[0]["surface_area"];
+        population = parsedJson[0]["population"];
+        flag = parsedJson[0]["iso2"];
+        nationflag = NetworkImage("https://flagsapi.com/$flag/shiny/64.png");
+      });
       //print(parsedJson);
     }
   }
